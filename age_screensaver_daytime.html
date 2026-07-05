@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Age Screensaver</title>
+    <style>
+        body {
+            transition: background 5s ease;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            user-select: none;
+            background: #000; /* Dark default safely handles initial load */
+        }
+
+        .age {
+            font-size: 8vw;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.95);
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0px 4px 24px rgba(0, 0, 0, 0.5); 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="age-display" class="age">0.000000000</div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const BIRTH_DATE_STRING = "2001-09-23T00:00:00"; // Replace with your birthdate
+        const DECIMAL_PLACES = 9;
+        // ---------------------
+
+        const birthDate = new Date(BIRTH_DATE_STRING);
+        const ageDisplay = document.getElementById("age-display");
+
+        function updateBackground() {
+            const now = new Date();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            
+            // Convert time to a single decimal number (e.g., 23:30 becomes 23.5)
+            const currentTime = hour + (minute / 60);
+            let backgroundStyle = "";
+
+            // Precise, local time-based astronomical intervals
+            if (currentTime >= 5.5 && currentTime < 7.5) {
+                // 5:30 AM - 7:30 AM: Sunrise / Dawn (Soft pinks, gold, morning blue)
+                backgroundStyle = "linear-gradient(135deg, #ffafbd, #ffc3a0, #a1c4fd)";
+            } else if (currentTime >= 7.5 && currentTime < 18.5) {
+                // 7:30 AM - 6:30 PM: Midday Bright Sky Blue
+                backgroundStyle = "linear-gradient(135deg, #2980b9, #6dd5fa)";
+            } else if (currentTime >= 18.5 && currentTime < 21.5) {
+                // 6:30 PM - 9:30 PM: Sunset / Golden Hour (Warm amber & oranges)
+                backgroundStyle = "linear-gradient(135deg, #e65c00, #F9D423, #e74c3c)";
+            } else if (currentTime >= 21.5 && currentTime < 23.0) {
+                // 9:30 PM - 11:00 PM: Dusk / Twilight (Deep purples fading out)
+                backgroundStyle = "linear-gradient(135deg, #4b6cb7, #182848)";
+            } else {
+                // 11:00 PM - 5:30 AM: Deep Cosmic Night (Deep navy and black)
+                backgroundStyle = "linear-gradient(135deg, #0f2027, #203a43, #000000)";
+            }
+
+            document.body.style.background = backgroundStyle;
+        }
+
+        function updateAge() {
+            const now = new Date();
+            const ageInMilliseconds = now - birthDate;
+            const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
+            ageDisplay.textContent = ageInYears.toFixed(DECIMAL_PLACES);
+        }
+
+        // Loops
+        setInterval(updateAge, 50);
+        setInterval(updateBackground, 30000); // Check time every 30 seconds
+
+        // Immediate Execution
+        updateAge();
+        updateBackground();
+    </script>
+</body>
+</html>
