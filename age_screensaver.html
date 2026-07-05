@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Age Screensaver</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .age {
+            font-size: 8vw; /* Scales cleanly to any screen size */
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+            font-variant-numeric: tabular-nums; /* Keeps the numbers perfectly still while ticking */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="age-display" class="age">0.000000000</div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const BIRTH_DATE_STRING = "2001-09-23T00:00:00"; // Replace with your birthdate
+        const DECIMAL_PLACES = 9;
+        // ---------------------
+
+        const birthDate = new Date(BIRTH_DATE_STRING);
+        const ageDisplay = document.getElementById("age-display");
+
+        function updateAge() {
+            const now = new Date();
+            const ageInMilliseconds = now - birthDate;
+            const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
+            
+            ageDisplay.textContent = ageInYears.toFixed(DECIMAL_PLACES);
+        }
+
+        // Update 20 times a second for fluid, live ticking
+        setInterval(updateAge, 50);
+        updateAge();
+    </script>
+</body>
+</html>
